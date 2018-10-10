@@ -1,0 +1,19 @@
+{
+    "name": "nibynool/php-travis",
+    "description": "PHP interface to Travis-CI API v3",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Michael Lambert",
+            "email": "michael@alphageek.com.au"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle-services": "^1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "NibyNool\\PHPTravis\\": "src/"
+        }
+    }
+}

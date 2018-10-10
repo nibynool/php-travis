@@ -1,0 +1,561 @@
+{
+  "name":        "travis-ci",
+  "apiVersion":  "3",
+  "description": "Travis-CI API",
+  "operations": {
+    "getActive": {
+      "httpMethod":     "GET",
+      "uri":            "/owner/{owner}/active",
+      "summary":        "Retrieve active builds for the requested owner",
+      "responseClass":  "builds",
+      "parameters": {
+        "owner": {
+          "location": "uri",
+          "description": "Owner to get active builds for",
+          "required": true
+        }
+      }
+    },
+    "getBranch": {
+      "httpMethod":     "GET",
+      "uri":            "/repo/{owner}%2F{repository}/branch/{branch}",
+      "summary":        "Retrieve a specific branch for a repository",
+      "responseClass":  "branch",
+      "parameters": {
+        "owner": {
+          "location": "uri",
+          "description": "Owner of the repository",
+          "required": true
+        },
+        "repository": {
+          "location": "uri",
+          "description": "Repository to get the branch from",
+          "required": true
+        },
+        "branch": {
+          "location": "uri",
+          "description": "Branch to get",
+          "required": true
+        }
+      }
+    },
+    "listBranches": {
+      "httpMethod":     "GET",
+      "uri":            "/repo/{owner}%2F{repository}/branches",
+      "summary":        "Retrieve a list of branches for a repository",
+      "responseClass":  "branches",
+      "parameters": {
+        "owner": {
+          "location": "uri",
+          "description": "Owner of the repository",
+          "required": true
+        },
+        "repository": {
+          "location": "uri",
+          "description": "Repository to get the branch from",
+          "required": true
+        },
+        "exists_on_github": {
+          "location": "query",
+          "description": "'True' or 'False' if the branch must still exist on GitHub"
+        },
+        "include": {
+          "location": "query",
+          "description": "List of attributes ot eager load"
+        },
+        "limit": {
+          "location": "query",
+          "description": "Maximum number of results"
+        },
+        "offset": {
+          "location": "query",
+          "description": "Offset for result list"
+        },
+        "sort_by": {
+          "location": "query",
+          "description": "Field to sort by"
+        }
+      }
+    },
+    "getBuild": {
+      "httpMethod":     "GET",
+      "uri":            "/build/{id}",
+      "summary":        "Retrieve a specific build",
+      "responseClass":  "build",
+      "parameters": {
+        "id": {
+          "location": "uri",
+          "description": "Build ID",
+          "required": true
+        },
+        "include": {
+          "location": "query",
+          "description": "List of attributes ot eager load"
+        }
+      }
+    },
+    "cancelBuild": {
+      "httpMethod":     "POST",
+      "uri":            "/build/{id}/cancel",
+      "summary":        "Cancel a specific build",
+      "parameters": {
+        "id": {
+          "location": "uri",
+          "description": "Build ID",
+          "required": true
+        }
+      }
+    },
+    "restartBuild": {
+      "httpMethod":     "POST",
+      "uri":            "/build/{id}/restart",
+      "summary":        "Restart a specific build",
+      "parameters": {
+        "id": {
+          "location": "uri",
+          "description": "Build ID",
+          "required": true
+        }
+      }
+    },
+    "listBuilds": {
+      "httpMethod":     "GET",
+      "uri":            "/builds",
+      "summary":        "Retrieve a list of builds for the current user",
+      "responseClass":  "builds",
+      "parameters": {
+        "include": {
+          "location": "query",
+          "description": "List of attributes ot eager load"
+        },
+        "limit": {
+          "location": "query",
+          "description": "Maximum number of results"
+        },
+        "offset": {
+          "location": "query",
+          "description": "Offset for result list"
+        },
+        "sort_by": {
+          "location": "query",
+          "description": "Field to sort by"
+        }
+      }
+    },
+    "findBuilds": {
+      "httpMethod":     "GET",
+      "uri":            "/repo/{owner}%2F{repository}/builds",
+      "summary":        "Search builds for a repository",
+      "responseClass":  "builds",
+      "parameters": {
+        "owner": {
+          "location": "uri",
+          "description": "Owner of the repository",
+          "required": true
+        },
+        "repository": {
+          "location": "uri",
+          "description": "Repository to get the branch from",
+          "required": true
+        },
+        "branch.name": {
+          "location": "query",
+          "description": "Name of git branch to filter by"
+        },
+        "created_by": {
+          "location": "query",
+          "description": "User or organisation that created the build"
+        },
+        "event_type": {
+          "location": "query",
+          "description": "Event that triggered the build"
+        },
+        "previous_state": {
+          "location": "query",
+          "description": "Previous state of the build"
+        },
+        "state": {
+          "location": "query",
+          "description": "Current state of the build"
+        },
+        "include": {
+          "location": "query",
+          "description": "List of attributes ot eager load"
+        },
+        "limit": {
+          "location": "query",
+          "description": "Maximum number of results"
+        },
+        "offset": {
+          "location": "query",
+          "description": "Offset for result list"
+        },
+        "sort_by": {
+          "location": "query",
+          "description": "Field to sort by"
+        }
+
+      }
+    },
+  },
+  "models": {
+    "branch": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "location": "json",
+          "type": "string"
+        },
+        "repository": {
+          "location": "json",
+          "type": "object",
+          "$ref": "repository"
+        },
+        "default_branch": {
+          "location": "json",
+          "type": "boolean"
+        },
+        "exists_on_github": {
+          "location": "json",
+          "type": "boolean"
+        },
+        "last_build": {
+          "location": "json",
+          "type": "object",
+          "$ref": "build"
+        }
+      }
+    },
+    "branches": {
+      "type": "array",
+      "items": {
+        "$ref": "branch"
+      }
+    },
+    "build": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "location": "json",
+          "type": "integer"
+        },
+        "number": {
+          "location": "json",
+          "type": "string"
+        },
+        "state": {
+          "location": "json",
+          "type": "string"
+        },
+        "duration": {
+          "location": "json",
+          "type": "integer"
+        },
+        "event_type": {
+          "location": "json",
+          "type": "string"
+        },
+        "previous_state": {
+          "location": "json",
+          "type": "string"
+        },
+        "pull_request_title": {
+          "location": "json",
+          "type": "string"
+        },
+        "pull_request_number": {
+          "location": "json",
+          "type": "integer"
+        },
+        "started_at": {
+          "location": "json",
+          "type": "string"
+        },
+        "finished_at": {
+          "location": "json",
+          "type": "string"
+        },
+        "private": {
+          "location": "json",
+          "type": "boolean"
+        },
+        "repository": {
+          "location": "json",
+          "type": "object",
+          "$ref": "repository"
+        },
+        "branch": {
+          "location": "json",
+          "type": "object",
+          "$ref": "branch"
+        },
+        "tag": {
+          "location": "json",
+          "type": "string"
+        },
+        "commit": {
+          "location": "json",
+          "type": "object",
+          "$ref": "commit"
+        },
+        "jobs": {
+          "location": "json",
+          "type": "object",
+          "$ref": "jobs"
+        },
+        "stages": {
+          "location": "json",
+          "type": "array",
+          "items": {
+            "$ref": "stage"
+          }
+        },
+        "created_by": {
+          "location": "json",
+          "type": "object",
+          "$ref": "owner"
+        },
+        "updated_at": {
+          "location": "json",
+          "type": "string"
+        }
+      }
+    },
+    "builds": {
+      "type": "array",
+      "items": {
+        "$ref": "build"
+      }
+    },
+    "commit": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "location": "json",
+          "type": "integer"
+        },
+        "sha": {
+          "location": "json",
+          "type": "string"
+        },
+        "ref": {
+          "location": "json",
+          "type": "string"
+        },
+        "message": {
+          "location": "json",
+          "type": "string"
+        },
+        "compare_url": {
+          "location": "json",
+          "type": "string"
+        },
+        "committed_at": {
+          "location": "json",
+          "type": "string"
+        },
+        "committer": {
+          "location": "json",
+          "type": "object"
+        },
+        "author": {
+          "location": "json",
+          "type": "object"
+        }
+      }
+    },
+    "job": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "location": "json",
+          "type": "integer"
+        },
+        "number": {
+          "location": "json",
+          "type": "string"
+        },
+        "state": {
+          "location": "json",
+          "type": "string"
+        },
+        "started_at": {
+          "location": "json",
+          "type": "string"
+        },
+        "finished_at": {
+          "location": "json",
+          "type": "string"
+        },
+        "build": {
+          "location": "json",
+          "type": "object",
+          "$ref": "build"
+        },
+        "queue": {
+          "location": "json",
+          "type": "string"
+        },
+        "repository": {
+          "location": "json",
+          "type": "object",
+          "$ref": "repository"
+        },
+        "commit": {
+          "location": "json",
+          "type": "object",
+          "$ref": "commit"
+        },
+        "owner": {
+          "location": "json",
+          "type": "object",
+          "$ref": "owner"
+        },
+        "stage": {
+          "location": "json",
+          "type": "array",
+          "items": {
+            "$ref": "stage"
+          }
+        },
+        "created_at": {
+          "location": "json",
+          "type": "string"
+        },
+        "updated_at": {
+          "location": "json",
+          "type": "string"
+        },
+        "private": {
+          "location": "json",
+          "type": "boolean"
+        },
+        "config": {
+          "location": "json",
+          "type": "object"
+        }
+      }
+    },
+    "jobs": {
+      "type": "array",
+      "items": {
+        "$ref": "job"
+      }
+    },
+    "owner": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "location": "json",
+          "type": "integer"
+        },
+        "login": {
+          "location": "json",
+          "type": "string"
+        },
+        "name": {
+          "location": "json",
+          "type": "string"
+        },
+        "github_id": {
+          "location": "json",
+          "type": "integer"
+        },
+        "avatar_url": {
+          "location": "json",
+          "type": "string"
+        },
+        "education": {
+          "location": "json",
+          "type": "boolean"
+        }
+      }
+    },
+    "repository": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "location": "json",
+          "type": "integer"
+        },
+        "name": {
+          "location": "json",
+          "type": "string"
+        },
+        "slug": {
+          "location": "json",
+          "type": "string"
+        },
+        "description": {
+          "location": "json",
+          "type": "string"
+        },
+        "github_id": {
+          "location": "json",
+          "type": "integer"
+        },
+        "github_language": {
+          "location": "json",
+          "type": "string"
+        },
+        "active": {
+          "location": "json",
+          "type": "boolean"
+        },
+        "private": {
+          "location": "json",
+          "type": "boolean"
+        },
+        "owner": {
+          "location": "json",
+          "type": "object",
+          "$ref": "owner"
+        },
+        "default_branch": {
+          "location": "json",
+          "type": "object",
+          "$ref": "branch"
+        },
+        "starred": {
+          "location": "json",
+          "type": "boolean"
+        },
+        "managed_by_installation": {
+          "location": "json",
+          "type": "boolean"
+        },
+        "active_on_org": {
+          "location": "json",
+          "type": "boolean"
+        }
+      }
+    },
+    "stage": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "location": "json",
+          "type": "string"
+        },
+        "repository": {
+          "location": "json",
+          "type": "object",
+          "$ref": "repository"
+        },
+        "default_branch": {
+          "location": "json",
+          "type": "boolean"
+        },
+        "exists_on_github": {
+          "location": "json",
+          "type": "boolean"
+        },
+        "last_build": {
+          "location": "json",
+          "type": "object",
+          "$ref": "build"
+        }
+      }
+    }
+  }
+}
