@@ -51,7 +51,8 @@ class TravisAPI
      */
     public function __construct($token, $openSource = true, $config = [])
     {
-        $this->client = new Client(self::$defaultConfig + [['headers' => ['Authorization' => 'token '.$token]]] + $config);
+        $config = array_merge_recursive(self::$defaultConfig, ['headers' => ['Authorization' => 'token '.$token]], $config);
+        $this->client = new Client($config);
         $serviceDescription = \json_decode(file_get_contents(__DIR__.'/service.json'), true);
         $serviceDescription['baseUrl'] = !$openSource ? self::$baseUrls['private'] : self::$baseUrls['openSource'];
         $this->description = new Description($serviceDescription);
@@ -65,7 +66,7 @@ class TravisAPI
      */
     public function __call($method, $arguments)
     {
-        $command = $this->guzzleClient->getCommand($method, $arguments);
+        $command = $this->guzzleClient->getCommand($method, $arguments[0]);
         return $this->guzzleClient->execute($command);
     }
 }
