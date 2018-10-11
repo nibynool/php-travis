@@ -9,7 +9,8 @@
         }
     ],
     "require": {
-        "guzzlehttp/guzzle-services": "^1.1"
+        "guzzlehttp/guzzle-services": "^1.1",
+        "ext-json": "*"
     },
     "autoload": {
         "psr-4": {
